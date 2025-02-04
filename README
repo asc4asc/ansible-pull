@@ -1,1 +1,1 @@
-test file
+ansible-pull -i 'localhost,' -U 
