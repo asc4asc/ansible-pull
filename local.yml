@@ -3,22 +3,15 @@
   gather_facts: yes
   become: yes
 
+---
+- name: Clone a Git repository
+  hosts: localhost
+  become: no  # Set to 'yes' if you need elevated privileges
   tasks:
-    - name: Perform a dist-upgrade.
-      ansible.builtin.apt:
-        upgrade: dist
-        update_cache: yes
-
-    - name: Check if a reboot is required.
-      ansible.builtin.stat:
-        path: /var/run/reboot-required
-        get_checksum: no
-      register: reboot_required_file
-
-    - name: Reboot the server (if required).
-      ansible.builtin.reboot:
-      when: reboot_required_file.stat.exists == true
-
-    - name: Remove dependencies that are no longer required.
-      ansible.builtin.apt:
-        autoremove: yes
+    - name: Clone Git repository
+      git:
+        repo: 'https://github.com/asc4asc/menu.git'  # Replace with your repo URL
+        dest: '/'  # Path where the repo will be cloned
+        clone: yes
+        update: yes  # Set to 'yes' if you want to pull updates for an already cloned repo
+        version: 'master'  # Optionally specify the branch or commit hash you want to checkout
