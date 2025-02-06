@@ -1,9 +1,4 @@
 ---
-- hosts: localhost
-  gather_facts: yes
-  become: yes
-
----
 - name: Clone a Git repository
   hosts: localhost
   become: no  # Set to 'yes' if you need elevated privileges
