@@ -1,4 +1,4 @@
-ansible-pull -U https://github.com/asc4asc/ansible-pull.git -e "branch=main"
+ansible-pull -U https://github.com/asc4asc/ansible-pull.git -C main
 
 Wenn hosts:all gesetzt ist, muss es so aufgerufen werden.
 
