@@ -1,15 +1,32 @@
 ---
-- name: Manage sudoers.d files
+- name: Configure NFTables Router
   hosts: localhost
-  become: true
-  vars:
-    user: "{{ lookup('env','USER') }}" 
+  become: yes
   tasks:
-    - name: Add user to sudoers.d
-      lineinfile:
-        path: /etc/sudoers.d/sudo_{{ user }}
-        line: '{{ user }} ALL=(ALL) NOPASSWD: ALL'
+    - name: Install nftables
+      apt:
+        name: nftables
         state: present
-        create: yes
-        mode: '0440'
-        validate: '/usr/sbin/visudo -cf %s'
+
+    - name: Enable IP forwarding
+      sysctl:
+        name: net.ipv4.ip_forward
+        value: '1'
+        state: present
+        reload: yes
+
+    - name: Configure NFTables rules
+      copy:
+        dest: /etc/nftables.conf
+        content: |
+          table ip nat {
+              chain postrouting {
+                  type nat hook postrouting priority 100; policy accept;
+                  oifname "eth0" masquerade
+              }
+          }
+    - name: Enable and start nftables service
+      systemd:
+        name: nftables
+        enabled: yes
+        state: started
