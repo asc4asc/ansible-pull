@@ -6,7 +6,7 @@
     - name: Clone Git repository
       git:
         repo: 'https://github.com/asc4asc/menu.git'  # Replace with your repo URL
-        dest: '/home/ekf'  # Path where the repo will be cloned
+        dest: '/home/ekf/save-git'  # Path where the repo will be cloned
         clone: yes
         update: yes  # Set to 'yes' if you want to pull updates for an already cloned repo
         version: 'main'  # Optionally specify the branch or commit hash you want to checkout
