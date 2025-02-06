@@ -1,32 +1,19 @@
 ---
-- name: Configure NFTables Router
+- name: deploywebserver
   hosts: localhost
-  become: yes
+  remote_user: root
+  become: true
+ 
   tasks:
-    - name: Install nftables
-      apt:
-        name: nftables
-        state: present
-
-    - name: Enable IP forwarding
-      sysctl:
-        name: net.ipv4.ip_forward
-        value: '1'
-        state: present
-        reload: yes
-
-    - name: Configure NFTables rules
-      copy:
-        dest: /etc/nftables.conf
-        content: |
-          table ip nat {
-              chain postrouting {
-                  type nat hook postrouting priority 100; policy accept;
-                  oifname "eth0" masquerade
-              }
-          }
-    - name: Enable and start nftables service
-      systemd:
-        name: nftables
-        enabled: yes
-        state: started
+  - name: install appache
+    apt: name=apache2 update_cache=yes state=latest
+  
+  handlers:
+  - name: Reload Apache
+    service:
+     name: apache2
+     state: reloaded
+  - name: Restart Apache
+    service:
+     name: apache2
+     state: restarted        
