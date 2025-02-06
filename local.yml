@@ -8,5 +8,5 @@
         repo: 'https://github.com/asc4asc/menu.git'  # Replace with your repo URL
         dest: '/home/ansible/menu'  # Path where the repo will be cloned
         clone: yes
-        # update: yes  # Set to 'yes' if you want to pull updates for an already cloned repo
+        update: yes  # Set to 'yes' if you want to pull updates for an already cloned repo
         version: 'master'  # Optionally specify the branch or commit hash you want to checkout
