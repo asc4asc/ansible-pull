@@ -1,15 +1,13 @@
 ---
-- name: Create SSH key
+- name: Save text to a file
   hosts: localhost
-  tasks:
-    - name: Generate SSH key
-      ansible.builtin.openssh_keypair:
-        path: ~/.ssh/id_rsa
-        type: rsa
-        size: 2048
-        state: present
-      register: ssh_key
+  become: yes
 
-    - name: Display the public key
-      debug:
-        msg: "{{ ssh_key.public_key }}"
+  tasks:
+    - name: Write playbook text to a file
+      copy:
+        content: |
+          ---
+          #!/bin/bash
+          echo "Das ist das script"
+        dest: /usr/local/bin/stest
