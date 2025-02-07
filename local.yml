@@ -1,19 +1,15 @@
 ---
-- name: deploywebserver
+- name: Create SSH key
   hosts: localhost
-  remote_user: root
-  become: true
- 
   tasks:
-  - name: install appache
-    apt: name=apache2 update_cache=yes state=latest
-  
-  handlers:
-  - name: Reload Apache
-    service:
-     name: apache2
-     state: reloaded
-  - name: Restart Apache
-    service:
-     name: apache2
-     state: restarted        
+    - name: Generate SSH key
+      ansible.builtin.openssh_keypair:
+        path: ~/.ssh/id_rsa
+        type: rsa
+        size: 2048
+        state: present
+      register: ssh_key
+
+    - name: Display the public key
+      debug:
+        msg: "{{ ssh_key.public_key }}"
