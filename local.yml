@@ -1,13 +1,24 @@
 ---
-- name: Save text to a file
+- name: Configure auto login on Debian console
   hosts: localhost
   become: yes
-
   tasks:
-    - name: Write playbook text to a file
+    - name: Create directory for getty override
+      file:
+        path: /etc/systemd/system/getty@tty1.service.d
+        state: directory
+        mode: '0755'
+
+    - name: Create override.conf for auto login
       copy:
+        dest: /etc/systemd/system/getty@tty1.service.d/override.conf
         content: |
-          ---
-          #!/bin/bash
-          echo "Das ist das script"
-        dest: /usr/local/bin/stest
+          [Service]
+          ExecStart=
+          ExecStart=-/sbin/agetty --autologin your_username --noclear %I $TERM
+
+    - name: Reload systemd daemon
+      command: systemctl daemon-reload
+
+    - name: Restart getty service
+      command: systemctl restart getty@tty1
