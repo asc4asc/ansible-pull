@@ -1,18 +1,18 @@
 ---
-
-- name: Update MOTD with IP address
+- name: Show IP address on login screen
   hosts: localhost
   become: yes
   tasks:
-    - name: Get IP address
-      command: hostname -I
-      register: ip_address
-
-    - name: Update MOTD
+    - name: Copy show_ip.sh to the remote server
       copy:
-        content: |
-          Welcome to your server!
-          Your IP address is: {{ ip_address.stdout }}
-        dest: /etc/motd
-  
+        src: show_ip.sh
+        dest: /usr/local/bin/show_ip.sh
+        mode: '0755'
+
+    - name: Add script to /etc/issue
+      lineinfile:
+        path: /etc/issue
+        line: '$(/usr/local/bin/show_ip.sh)'
+        create: yes
+
 
