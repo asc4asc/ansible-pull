@@ -3,16 +3,10 @@
   hosts: localhost
   become: yes
   tasks:
-    - name: Copy show_ip.sh to the remote server
-      copy:
-        src: show_ip.sh
-        dest: /usr/local/bin/show_ip.sh
-        mode: '0755'
-
     - name: Add script to /etc/issue
       lineinfile:
         path: /etc/issue
-        line: '$(/usr/local/bin/show_ip.sh)'
+        "{{ ansible_default_ipv4.address }}"
         create: yes
 
 
