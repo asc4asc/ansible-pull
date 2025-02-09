@@ -15,7 +15,7 @@
         content: |
           [Service]
           ExecStart=
-          ExecStart=-/sbin/agetty --autologin "{{ ansible-user }}" --noclear %I linux
+          ExecStart=-/sbin/agetty --autologin ansible --noclear %I linux
 
     - name: Reload systemd daemon
       command: systemctl daemon-reload
