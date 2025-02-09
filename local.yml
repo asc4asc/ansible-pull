@@ -1,16 +1,18 @@
 ---
-- name: Setup SSH key authentication
+
+- name: Update MOTD with IP address
   hosts: localhost
   become: yes
   tasks:
-    - name: Disable password authentication
-      lineinfile:
-        path: /etc/ssh/sshd_config
-        regexp: '^#?PasswordAuthentication'
-        line: 'PasswordAuthentication no'
-        state: present
+    - name: Get IP address
+      command: hostname -I
+      register: ip_address
 
-    - name: Restart SSH service
-      service:
-        name: sshd
-        state: restarted
+    - name: Update MOTD
+      copy:
+        content: |
+          Welcome to your server!
+          Your IP address is: {{ ip_address.stdout }}
+        dest: /etc/motd
+  
+
