@@ -1,24 +1,32 @@
 ---
-- name: Configure auto login on Debian console
+- name: Setup SSH key authentication
   hosts: localhost
   become: yes
   tasks:
-    - name: Create directory for getty override
+    - name: Ensure .ssh directory exists
       file:
-        path: /etc/systemd/system/getty@tty1.service.d
+        path: /home/{{ ansible_user }}/.ssh
         state: directory
-        mode: '0755'
+        mode: '0700'
+        owner: "{{ ansible_user }}"
+        group: "{{ ansible_user }}"
 
-    - name: Create override.conf for auto login
+    - name: Copy public key to authorized_keys
       copy:
-        dest: /etc/systemd/system/getty@tty1.service.d/override.conf
-        content: |
-          [Service]
-          ExecStart=
-          ExecStart=-/sbin/agetty --autologin ansible --noclear %I linux
+        src: /path/to/local/id_rsa.pub
+        dest: /home/{{ ansible_user }}/.ssh/authorized_keys
+        mode: '0600'
+        owner: "{{ ansible_user }}"
+        group: "{{ ansible_user }}"
 
-    - name: Reload systemd daemon
-      command: systemctl daemon-reload
+    - name: Disable password authentication
+      lineinfile:
+        path: /etc/ssh/sshd_config
+        regexp: '^#?PasswordAuthentication'
+        line: 'PasswordAuthentication no'
+        state: present
 
-    - name: Restart getty service
-      command: systemctl restart getty@tty1
+    - name: Restart SSH service
+      service:
+        name: sshd
+        state: restarted
