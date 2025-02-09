@@ -3,22 +3,6 @@
   hosts: localhost
   become: yes
   tasks:
-    - name: Ensure .ssh directory exists
-      file:
-        path: /home/{{ ansible_user }}/.ssh
-        state: directory
-        mode: '0700'
-        owner: "{{ ansible_user }}"
-        group: "{{ ansible_user }}"
-
-    - name: Copy public key to authorized_keys
-      copy:
-        src: /path/to/local/id_rsa.pub
-        dest: /home/{{ ansible_user }}/.ssh/authorized_keys
-        mode: '0600'
-        owner: "{{ ansible_user }}"
-        group: "{{ ansible_user }}"
-
     - name: Disable password authentication
       lineinfile:
         path: /etc/ssh/sshd_config
