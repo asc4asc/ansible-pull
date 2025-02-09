@@ -6,7 +6,7 @@
     - name: Add script to /etc/issue
       lineinfile:
         path: /etc/issue
-        "{{ ansible_default_ipv4.address }}"
+        line: "{{ ansible_default_ipv4.address }}"
         create: yes
 
 
