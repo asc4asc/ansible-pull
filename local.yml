@@ -3,10 +3,8 @@
   hosts: localhost
   become: yes
   tasks:
-    - name: Add script to /etc/issue
-      lineinfile:
-        path: /etc/issue
-        line: "{{ ansible_default_ipv4.address }}"
-        create: yes
-
-
+      - name: GNOME Preferences - Nautilus - Clock Format
+        dconf:
+        key: "/org/gnome/desktop/interface/clock-format"
+        value: "'24h'"
+        state: present
