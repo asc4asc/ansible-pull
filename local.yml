@@ -6,4 +6,4 @@
   - name: GNOME Desktop - Enable/Disable seconds
     dconf:
       key: "/org/gnome/desktop/interface/clock-show-seconds"
-      value: "{{ gnome_topbar_time_seconds | lower }}"
+      value: true
