@@ -19,7 +19,6 @@
   connection: local
   become: true
   become_user: ansible
-  gather_facts: true
 
   tasks:
     - name: add history bash.
