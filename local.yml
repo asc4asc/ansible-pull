@@ -1,15 +1,24 @@
 ---
-- name: Simple ansible-pull
-  hosts: localhost
-  connection: local
-  # become: true
+# Useful for testing with menu and preseeding ..... 
 
-  tasks:
-    - name: Create test file
-      copy:
-        dest: /tmp/ansible-pull.txt
-        content: "ansible-pull OK\n"
-        # owner: root
-        # group: root
-        # mode: '0644'
-        
+- name: apply a test configuration to the machine
+  hosts: "{{ target_hosts | default('all:!localhost') }}"
+  # remote_user: ekf
+  become: true
+  
+  pre_tasks:
+    - name: Gather facts
+      ansible.builtin.setup:
+      
+    - name: Wait for network to be up
+      wait_for:
+        host: "{{ ansible_host }}"
+        port: 22
+        delay: 1
+        timeout: 30
+      delegate_to: localhost
+ 
+  roles:
+    - setup
+    - up2date_debian
+    - auto_consol_login
