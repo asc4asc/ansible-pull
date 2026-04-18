@@ -1,5 +1,5 @@
 ---
-- name: Simple ansible-pull without roles
+- name: Simple ansible-pull
   hosts: localhost
   connection: local
   # become: true
