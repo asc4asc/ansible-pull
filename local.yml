@@ -2,14 +2,14 @@
 - name: Simple ansible-pull without roles
   hosts: localhost
   connection: local
-  become: true
+  # become: true
 
   tasks:
     - name: Create test file
       copy:
         dest: /tmp/ansible-pull.txt
         content: "ansible-pull OK\n"
-        owner: root
-        group: root
-        mode: '0644'
+        # owner: root
+        # group: root
+        # mode: '0644'
         
