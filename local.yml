@@ -1,9 +1,15 @@
 ---
-- name: Show IP address on login screen
+- name: Simple ansible-pull without roles
   hosts: localhost
-  become: yes
+  connection: local
+  become: true
+
   tasks:
-  - name: GNOME Desktop - Enable/Disable seconds
-    dconf:
-      key: "/org/gnome/desktop/interface/clock-show-seconds"
-      value: false
+    - name: Create test file
+      copy:
+        dest: /tmp/ansible-pull.txt
+        content: "ansible-pull OK\n"
+        owner: root
+        group: root
+        mode: '0644'
+    
