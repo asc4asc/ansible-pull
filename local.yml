@@ -13,18 +13,3 @@
         owner: ansible
         group: ansible
         mode: '0600'
-
-- name: History of bash for quick use as menu.
-  hosts: localhost
-  connection: local
-  become: true
-  become_user: ansible
-
-  tasks:
-    - name: add history bash.
-      shell: cd /home/ansible && echo 'ls -la' >> .bash_history && echo 'echo "Hello, World!"' >> .bash_history
-
-# May be add a short use with !1 and other history commands.
-# Ende
-
-        
