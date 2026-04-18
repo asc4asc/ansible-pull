@@ -1,0 +1,4 @@
+ping www.ekf.de
+ping6 www.google.de
+ip -6 route
+ip a
