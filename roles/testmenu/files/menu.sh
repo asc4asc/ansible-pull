@@ -1,0 +1,10 @@
+#!/bin/bash
+GREEN='\033[0;32m'
+YELLOW='\033[1;33m'
+NC='\033[0m'  # No Color (reset)
+
+# ./check4hardware-change
+./bios-info.bash
+echo -n -e "${YELLOW}Current date: ${GREEN}"&& date +"%FT%T" && echo -n -e ${NC}
+cat menu.txt
+exit 0

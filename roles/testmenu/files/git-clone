@@ -1,0 +1,86 @@
+#!/bin/bash
+#
+# git-clone - Clone or update Git repositories
+#
+# This script clones Git repositories if they don't exist,
+# or updates them with git pull if they already exist.
+#
+
+set -e
+
+# Colors for output
+RED='\033[0;31m'
+GREEN='\033[0;32m'
+YELLOW='\033[1;33m'
+BLUE='\033[0;34m'
+NC='\033[0m' # No Color
+
+# Function: Print error message
+error() {
+    echo -e "${RED}ERROR:${NC} $1" >&2
+}
+
+# Function: Print success message
+success() {
+    echo -e "${GREEN}✓${NC} $1"
+}
+
+# Function: Print info message
+info() {
+    echo -e "${BLUE}→${NC} $1"
+}
+
+# Function: Print warning message
+warning() {
+    echo -e "${YELLOW}⚠${NC} $1"
+}
+
+# Function: Clone or pull a repository
+# Arguments: $1 = target directory, $2 = git URL
+clone_or_pull() {
+    local target_dir="$1"
+    local git_url="$2"
+    local repo_name=$(basename "$target_dir")
+
+    if [[ -d "$target_dir" ]]; then
+        if [[ -d "$target_dir/.git" ]]; then
+            info "Repository '$repo_name' already exists, updating..."
+            cd "$target_dir"
+            if git pull; then
+                success "Updated '$repo_name'"
+            else
+                error "Failed to update '$repo_name'"
+                return 1
+            fi
+            cd - > /dev/null
+        else
+            warning "Directory '$target_dir' exists but is not a Git repository"
+            return 1
+        fi
+    else
+        info "Cloning '$repo_name'..."
+        if git clone "$git_url" "$target_dir"; then
+            success "Cloned '$repo_name'"
+        else
+            error "Failed to clone '$repo_name'"
+            return 1
+        fi
+    fi
+
+    return 0
+}
+
+# Main execution
+main() {
+    echo "=== Git Clone/Update Utility ==="
+    echo ""
+
+    # Clone/update main menu repository
+    clone_or_pull "$HOME/menu" "git@gitlab.ekf.com:asc/menu.git"
+
+    echo ""
+    success "Repository processed successfully"
+}
+
+# Run main function
+main "$@"

@@ -1,0 +1,74 @@
+---
+- name: Install packages needed
+  ansible.builtin.apt:
+    name:
+      - ansible
+    state: latest
+
+- name: Copy files from the 'files' directory
+  copy:
+    src: "{{ item }}"
+    dest: "/usr/local/bin/{{ item }}"
+    mode: '0755'
+  with_items:
+    - sudo4user
+    - make-auto-login-console
+
+- name: Copy files from the 'files' directory
+  copy:
+    src: "{{ item }}"
+    dest: "{{ lookup('env','HOME') }}/{{ item }}"
+    mode: '0755'
+    owner: "{{ local_user }}"
+    group: "{{ local_user }}"
+  with_items:
+    - check4hardware-change
+    - bios-info.bash
+    - p
+    - r
+    - start-reboot
+    - start-powercycle
+    - stress-test
+    - 900-timeout-reboot
+    - 900-timeout-powercycle
+    - get-git-sshkeys2authorized_keys
+    - git-clone
+    - ssd-test
+    - menu.sh
+     
+- name: Ensure .bash_aliases file exists
+  copy:
+    dest: "{{ lookup('env','HOME') }}/.bash_aliases"
+    content: |
+      alias ll='ls -la'
+      alias gs='git status'
+      alias gp='git pull'
+      alias menu='echo $PATH | grep :.$ > /dev/null || PATH=$PATH:. && cd && cat menu.txt' 
+       
+- name: create a small file with instructions
+  copy:
+    owner: "{{ local_user }}"
+    group: "{{ local_user }}"
+    dest: "{{ lookup('env','HOME') }}/menu.txt" 
+    content: |
+      ---------------------------------------------------
+      p) poweroff 
+      r) reboot
+      stress-test) Simple script to make CPU stress.
+      clean.boot) Clean boot disk. Example for a new Install over the net.
+      Please use start-reboot or start-restart to start a endless test. 
+      ---------------------------------------------------
+      
+- name: Add a lines to .bashrc
+  ansible.builtin.blockinfile:
+    path: "{{ lookup('env','HOME') }}/.bashrc"
+    marker: "# {mark} menu is ready"
+    block: |
+      PATH=$PATH:"."
+      if [ $(tty) == /dev/tty1 ] || [ $(tty) == /dev/pts/0 ]; then if [ -d "todo" ] && [ "$(ls -A todo)" ] ; then run-parts todo && menu.sh ; else cd && cd && menu.sh; fi; fi
+    
+- name: create a file 
+  copy:
+    dest: /this_is_a_test_install 
+    content: |
+      file to mark that this is only a test install and can deleated easy.

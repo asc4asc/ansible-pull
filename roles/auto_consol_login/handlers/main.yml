@@ -1,5 +1,0 @@
-- name: Restart tty1
-  ansible.builtin.systemd:
-    name: getty@tty1
-    enabled: yes
-    state: restarted
