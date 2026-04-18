@@ -6,18 +6,6 @@
   # remote_user: ekf
   become: true
   
-  pre_tasks:
-    - name: Gather facts
-      ansible.builtin.setup:
-      
-    - name: Wait for network to be up
-      wait_for:
-        host: "{{ ansible_host }}"
-        port: 22
-        delay: 1
-        timeout: 30
-      delegate_to: localhost
- 
   roles:
     - setup
     - up2date_debian
