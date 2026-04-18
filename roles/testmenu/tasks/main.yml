@@ -19,8 +19,8 @@
     src: "{{ item }}"
     dest: "{{ lookup('env','HOME') }}/{{ item }}"
     mode: '0755'
-    owner: root
-    group: root
+    owner: "{{ ansible_user_id }}"
+    group: "{{ ansible_user_id }}"
   with_items:
     - check4hardware-change
     - bios-info.bash
@@ -47,8 +47,8 @@
        
 - name: create a small file with instructions
   copy:
-    owner: root
-    group: root
+    owner: "{{ ansible_user_id }}"
+    group: "{{ ansible_user_id }}"
     dest: "{{ lookup('env','HOME') }}/menu.txt" 
     content: |
       ---------------------------------------------------
