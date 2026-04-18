@@ -2,7 +2,7 @@
 # Useful for testing with menu and preseeding ..... 
 
 - name: apply a test configuration to the machine
-  hosts: "{{ target_hosts | default('all:!localhost') }}"
+  hosts: localhost
   # remote_user: ekf
   become: true
   
