@@ -55,15 +55,15 @@
 #    label: "{{ item.name }}"
 #  when: item.ssh_key | default(false)
 
-- name: SSH Public Key in authorized_keys kopieren
-  authorized_key:
-    user: "{{ item.name }}"
-    state: present
-    key: "{{ lookup('file', user_management_ssh_public_key_file) }}"
-  loop: "{{ user_management_users | selectattr('ssh_key', 'equalto', true) | list }}"
-  loop_control:
-    label: "{{ item.name }}"
-  when: item.ssh_key | default(false)
+#- name: SSH Public Key in authorized_keys kopieren
+#  authorized_key:
+#    user: "{{ item.name }}"
+#    state: present
+#    key: "{{ lookup('file', user_management_ssh_public_key_file) }}"
+#  loop: "{{ user_management_users | selectattr('ssh_key', 'equalto', true) | list }}"
+#  loop_control:
+#    label: "{{ item.name }}"
+#  when: item.ssh_key | default(false)
 
 - name: Erstellte Benutzer anzeigen
   debug:
