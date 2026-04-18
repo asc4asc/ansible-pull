@@ -2,9 +2,4 @@ Hi,
 
 simple demo call:
 
-ansible-pull -U https://github.com/asc4asc/ansible-pull.git
-
-Make a check with: cat /tmp/ansible-pull.txt that a file was created.
-
-----
-If you will use it as root enable become and set root as owner. 
+ansible-pull -U https://github.com/asc4asc/ansible-pull.git -C add2history
