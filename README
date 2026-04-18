@@ -16,3 +16,9 @@ make-auto-login-console -d
 make-auto-login-console -e ansible
 
 sudo service systemd-soft-reboot restart
+
+make-auto-login-console -d
+
+make-auto-login-console -e ekf
+
+sudo service systemd-soft-reboot restart
