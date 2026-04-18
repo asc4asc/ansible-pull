@@ -1,5 +1,7 @@
-ansible-pull -U https://github.com/asc4asc/ansible-pull.git -C main
+Hi,
 
-Wenn hosts:all gesetzt ist, muss es so aufgerufen werden.
+simple demo call:
 
-ansible-pull -i 'localhost,' -U https://github.com/asc4asc/ansible-pull.git
+ansible-pull -U https://github.com/asc4asc/ansible-pull.git
+
+Make a check with: cat /tmp/ansible-pull.txt that a file was created. 
