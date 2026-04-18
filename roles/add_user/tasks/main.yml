@@ -43,17 +43,17 @@
     label: "{{ item.name }}"
   when: item.sudo | default(false)
 
-- name: .ssh Verzeichnis erstellen
-  file:
-    path: "/home/{{ item.name }}/.ssh"
-    state: directory
-    owner: "{{ item.name }}"
-    group: "{{ item.name }}"
-    mode: "0700"
-  loop: "{{ user_management_users | selectattr('ssh_key', 'equalto', true) | list }}"
-  loop_control:
-    label: "{{ item.name }}"
-  when: item.ssh_key | default(false)
+#- name: .ssh Verzeichnis erstellen
+#  file:
+#    path: "/home/{{ item.name }}/.ssh"
+#    state: directory
+#    owner: "{{ item.name }}"
+#    group: "{{ item.name }}"
+#    mode: "0700"
+#  loop: "{{ user_management_users | selectattr('ssh_key', 'equalto', true) | list }}"
+#  loop_control:
+#    label: "{{ item.name }}"
+#  when: item.ssh_key | default(false)
 
 - name: SSH Public Key in authorized_keys kopieren
   authorized_key:
