@@ -30,4 +30,4 @@ user_management_sudo_group_redhat: "wheel"
 # Standard: ~/.ssh/id_ed25519.pub des ausführenden Benutzers
 # Kann überschrieben werden mit z.B.:
 # user_management_ssh_public_key_file: "/pfad/zu/custom_key.pub"
-user_management_ssh_public_key_file: "{{ lookup('env','HOME') }}/.ssh/id_ed25519.pub"
+# user_management_ssh_public_key_file: "{{ lookup('env','HOME') }}/.ssh/id_ed25519.pub"
