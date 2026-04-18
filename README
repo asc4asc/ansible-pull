@@ -4,4 +4,7 @@ simple demo call:
 
 ansible-pull -U https://github.com/asc4asc/ansible-pull.git
 
-Make a check with: cat /tmp/ansible-pull.txt that a file was created. 
+Make a check with: cat /tmp/ansible-pull.txt that a file was created.
+
+---
+OK but becomes root ...... not the simplest example? Try to find a nicer one. 
