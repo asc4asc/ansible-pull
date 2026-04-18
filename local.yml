@@ -2,16 +2,12 @@
 # Playbook nur für Benutzerverwaltung (ohne SSH-Härtung)
 
 - name: Nur Benutzer anlegen
-  hosts: "{{ target_hosts | default('all:!localhost') }}"
-
-  vars:
-    ansible_ssh_common_args: '-o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null'
+  hosts: localhost
 
   # become: true
   gather_facts: true
   remote_user: root
 
   roles:
-    # - role: sshkeyscan # must be implemented a roule
     - role: add_user
 # End of file
