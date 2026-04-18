@@ -1,0 +1,33 @@
+---
+# Default variables for user_management role
+# file: roles/user_management/defaults/main.yml
+
+# Liste der anzulegenden Benutzer
+# Kann im Playbook oder in group_vars/host_vars überschrieben werden
+
+user_management_users:
+  - name: "ansible"
+    comment: "Management User Account"
+    uid: null
+    sudo: true     # Bekommt sudo-Rechte
+    ssh_key: true  # Bekommt SSH-Key
+
+# Beispiel für weitere Benutzer not uesed because ekf user is needed.
+  #- name: "test"
+  #  comment: " User Account"
+  #  uid: null
+  #  sudo: false  
+  #  ssh_key: false
+
+# Standard-Shell für alle Benutzer
+user_management_shell: "/bin/bash"
+
+# Sudo-Gruppen für verschiedene Distributionen
+user_management_sudo_group_debian: "sudo"
+user_management_sudo_group_redhat: "wheel"
+
+# SSH Public Key Quelle
+# Standard: ~/.ssh/id_ed25519.pub des ausführenden Benutzers
+# Kann überschrieben werden mit z.B.:
+# user_management_ssh_public_key_file: "/pfad/zu/custom_key.pub"
+user_management_ssh_public_key_file: "{{ lookup('env','HOME') }}/.ssh/id_ed25519.pub"

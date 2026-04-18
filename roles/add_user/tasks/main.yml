@@ -1,0 +1,73 @@
+---
+# Main tasks for user_management role
+# file: roles/user_management/tasks/main.yml
+
+- name: Primäre Sudo-Gruppe bestimmen (Debian/Ubuntu vs. RHEL)
+  set_fact:
+    user_management_sudo_group: >-
+      {{ user_management_sudo_group_debian if ansible_facts['os_family'] == 'Debian'
+         else user_management_sudo_group_redhat }}
+
+- name: Sudo-Gruppe sicherstellen (falls Distribution sie nicht hat)
+  group:
+    name: "{{ user_management_sudo_group }}"
+    state: present
+
+- name: Benutzer anlegen/aktualisieren
+  user:
+    name: "{{ item.name }}"
+    comment: "{{ item.comment }}"
+    uid: "{{ item.uid if item.uid is not none else omit }}"
+    shell: "{{ user_management_shell }}"
+    create_home: true
+    groups: "{{ user_management_sudo_group if item.sudo else omit }}"
+    append: true
+    state: present
+  loop: "{{ user_management_users }}"
+  loop_control:
+    label: "{{ item.name }}"
+
+- name: Sudoers-Drop-In für passwortloses sudo bereitstellen
+  copy:
+    dest: "/etc/sudoers.d/{{ item.name }}"
+    owner: root
+    group: root
+    mode: "0440"
+    content: |
+      # Managed by Ansible - user_management role
+      {{ item.name }} ALL=(ALL) NOPASSWD:ALL
+    # visudo-Validierung, scheitert bei Syntaxfehlern
+    validate: "visudo -cf %s"
+  loop: "{{ user_management_users | selectattr('sudo', 'equalto', true) | list }}"
+  loop_control:
+    label: "{{ item.name }}"
+  when: item.sudo | default(false)
+
+- name: .ssh Verzeichnis erstellen
+  file:
+    path: "/home/{{ item.name }}/.ssh"
+    state: directory
+    owner: "{{ item.name }}"
+    group: "{{ item.name }}"
+    mode: "0700"
+  loop: "{{ user_management_users | selectattr('ssh_key', 'equalto', true) | list }}"
+  loop_control:
+    label: "{{ item.name }}"
+  when: item.ssh_key | default(false)
+
+- name: SSH Public Key in authorized_keys kopieren
+  authorized_key:
+    user: "{{ item.name }}"
+    state: present
+    key: "{{ lookup('file', user_management_ssh_public_key_file) }}"
+  loop: "{{ user_management_users | selectattr('ssh_key', 'equalto', true) | list }}"
+  loop_control:
+    label: "{{ item.name }}"
+  when: item.ssh_key | default(false)
+
+- name: Erstellte Benutzer anzeigen
+  debug:
+    msg: "Benutzer '{{ item.name }}' wurde erstellt (sudo: {{ item.sudo }}, ssh_key: {{ item.ssh_key }})"
+  loop: "{{ user_management_users }}"
+  loop_control:
+    label: "{{ item.name }}"

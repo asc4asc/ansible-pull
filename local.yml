@@ -1,11 +1,17 @@
 ---
-# Useful for testing with menu and preseeding ..... 
+# Playbook nur für Benutzerverwaltung (ohne SSH-Härtung)
 
-- name: apply a test configuration to the machine
-  hosts: localhost
-  become: true
-  
+- name: Nur Benutzer anlegen
+  hosts: "{{ target_hosts | default('all:!localhost') }}"
+
+  vars:
+    ansible_ssh_common_args: '-o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null'
+
+  # become: true
+  gather_facts: true
+  remote_user: root
+
   roles:
-    - setup
-    - up2date_debian
-    - testmenu
+    # - role: sshkeyscan # must be implemented a roule
+    - role: add_user
+# End of file
