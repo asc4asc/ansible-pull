@@ -10,11 +10,12 @@
       ansible.builtin.copy:
         src: put2file_bash_history.txt
         dest: /home/ansible/.bash_history
-        owner: ekf
-        group: ekf
+        owner: ansible
+        group: ansible
         mode: '0600'
  
     - name: add history bash.
+      become_user: ansible
       shell: cd /home/ansible && echo 'ls -la' >> .bash_history && echo 'echo "Hello, World!"' >> .bash_history
 
 # May be add a short use with !1 and other history commands.
