@@ -13,11 +13,11 @@ user_management_users:
     ssh_key: true  # Bekommt SSH-Key
 
 # Beispiel für weitere Benutzer not uesed because ekf user is needed.
-  #- name: "test"
-  #  comment: " User Account"
-  #  uid: null
-  #  sudo: false  
-  #  ssh_key: false
+  - name: "ekf"
+    comment: " User Account"
+    uid: null
+    sudo: true  
+    ssh_key: true 
 
 # Standard-Shell für alle Benutzer
 user_management_shell: "/bin/bash"
