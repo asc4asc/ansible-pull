@@ -1,15 +1,23 @@
 ---
-- name: Simple ansible-pull
+- name: History of bash for quick use as menu.
   hosts: localhost
   connection: local
-  # become: true
+  become: true
+  gather_facts: true
 
   tasks:
-    - name: Create test file
-      copy:
-        dest: /tmp/ansible-pull.txt
-        content: "ansible-pull OK\n"
-        # owner: root
-        # group: root
-        # mode: '0644'
+    #- name: Copy bash_history
+    #  ansible.builtin.copy:
+    #    src: put2file_bash_history_ekf.txt
+    #    dest: /home/ekf/.bash_history
+    #    owner: ekf
+    #    group: ekf
+    #    mode: '0600'
+ 
+    - name: add history bash.
+      shell: cd /home/ekf && echo 'ls -la' >> .bash_history && echo 'echo "Hello, World!"' >> .bash_history
+
+# May be add a short use with !1 and other history commands.
+# Ende
+
         
