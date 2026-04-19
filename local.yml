@@ -1,12 +1,13 @@
 ---
-- name: Create SSH key
+- name: Create SSH key (ED25519)
   hosts: localhost
   tasks:
-    - name: Generate SSH key
+    - name: ED25519 SSH Key erzeugen
       ansible.builtin.openssh_keypair:
-        path: ~/.ssh/id_rsa
-        type: rsa
-        size: 2048
+        path: ~/.ssh/id_ed25519
+        type: ed25519
+        comment: "{{ ansible_user }}@{{ inventory_hostname }}"
+        mode: '0600'
         state: present
       register: ssh_key
 
