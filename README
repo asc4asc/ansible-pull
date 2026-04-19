@@ -8,17 +8,3 @@ Make a check with: cat /tmp/ansible-pull.txt that a file was created.
 
 ----
 If you will use it as root enable become and set root as owner. 
-
-----
-## Notizen:
-make-auto-login-console -d
-
-make-auto-login-console -e ansible
-
-sudo service systemd-soft-reboot restart
-
-make-auto-login-console -d
-
-make-auto-login-console -e ekf
-
-sudo service systemd-soft-reboot restart
