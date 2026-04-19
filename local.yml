@@ -9,7 +9,7 @@
     - name: Copy bash_history
       ansible.builtin.copy:
         src: put2file_bash_history.txt
-        dest: /home/ansible/.bash_history
-        owner: ansible
-        group: ansible
+        dest: /home/ekf/.bash_history
+        owner: ekf
+        group: ekf
         mode: '0600'
