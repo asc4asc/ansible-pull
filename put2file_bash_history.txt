@@ -1,3 +1,4 @@
+ansible-pull -U https://github.com/asc4asc/ansible-pull.git -C auto-login-console
 ping www.ekf.de
 ping6 www.google.de
 ip -6 route
