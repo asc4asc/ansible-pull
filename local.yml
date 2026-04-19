@@ -1,11 +1,70 @@
 ---
-# Useful for testing with menu and preseeding ..... 
-
-- name: apply a test configuration to the machine
-  hosts: localhost
+- name: Set German keyboard layout
+  hosts: "{{ target_hosts | default('all:!localhost') }}"
   become: true
-  
-  roles:
-    - setup
-    - up2date_debian
-    - testmenu
+
+  tasks:
+
+    - name: Configure Linux console keymap
+      ansible.builtin.lineinfile:
+        path: /etc/vconsole.conf
+        regexp: '^KEYMAP='
+        line: 'KEYMAP=de'
+      when: ansible_facts.os_family != "Debian"
+
+    - name: Apply localectl keymap
+      ansible.builtin.command: localectl set-keymap de
+      when: ansible_facts.os_family != "Debian"
+
+    - name: Configure keyboard on Debian/Ubuntu
+      ansible.builtin.lineinfile:
+        path: /etc/default/keyboard
+        regexp: '^XKBLAYOUT='
+        line: 'XKBLAYOUT="de"'
+      when: ansible_facts.os_family == "Debian"
+
+    - name: Reconfigure keyboard on Debian/Ubuntu
+      ansible.builtin.command: dpkg-reconfigure -f noninteractive keyboard-configuration
+      when: ansible_facts.os_family == "Debian"
+
+    - name: Apply keyboard layout to current console (Debian)
+      ansible.builtin.command: setupcon
+      when: ansible_facts.os_family == "Debian"
+      ignore_errors: true
+
+    - name: Apply keyboard layout to current console (non-Debian)
+      ansible.builtin.command: loadkeys de
+      when: ansible_facts.os_family != "Debian"
+      ignore_errors: true
+
+    - name: Check if systemd-logind is running
+      ansible.builtin.systemd:
+        name: systemd-logind
+      register: logind_status
+      ignore_errors: true
+
+    - name: Restart systemd-logind to apply changes
+      ansible.builtin.systemd:
+        name: systemd-logind
+        state: restarted
+      when: logind_status.status.ActiveState is defined and logind_status.status.ActiveState == "active"
+      ignore_errors: true
+
+    - name: Display completion message
+      ansible.builtin.debug:
+        msg:
+          - "================================================"
+          - "Keyboard layout changed to German (de)"
+          - "================================================"
+          - "Changes applied:"
+          - "  ✓ Console keyboard layout configured"
+          - "  ✓ System configuration updated"
+          - "  ✓ systemd-logind restarted (if available)"
+          - ""
+          - "For full effect, please:"
+          - "  - Log out and log back in (recommended)"
+          - "  - OR restart your graphical session"
+          - "  - OR reboot the system"
+          - ""
+          - "Current console should already use new layout."
+          - "================================================"

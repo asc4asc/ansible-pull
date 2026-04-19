@@ -1,3 +1,0 @@
-#!/bin/bash
-sudo systemctl set-default multi-user.target # Grafik aus.
-echo System must be started new.
