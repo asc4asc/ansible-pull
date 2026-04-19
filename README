@@ -1,5 +1,3 @@
+Erzeugt einen neuen ssh key für diesen Rechner.
+
 ansible-pull -U https://github.com/asc4asc/ansible-pull.git -C main
-
-Wenn hosts:all gesetzt ist, muss es so aufgerufen werden.
-
-ansible-pull -i 'localhost,' -U https://github.com/asc4asc/ansible-pull.git
