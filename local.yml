@@ -2,7 +2,7 @@
 - name: History of bash for quick use as menu.
   hosts: localhost
   connection: local
-  become: true
+  # become: true
   gather_facts: true
 
   tasks:
