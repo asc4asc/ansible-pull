@@ -6,35 +6,35 @@ error=0; trap 'error=$(($?>$error?$?:$error))' ERR # save maximum error code
 
 export LANG=C
 TTY=1
-REMOVE_FLAG=0
-OVER=/tmp/overwrite$$.conf
+DO_ENABLE=0
+DO_REMOVE=0
+DO_RESTART=0
 
 function make_auto_login() {
-sudo mkdir /etc/systemd/system/getty@tty${TTY}.service.d 
-cat > $OVER <<EOF
+mkdir -p /etc/systemd/system/getty@tty${TTY}.service.d 
+cat > /etc/systemd/system/getty@tty${TTY}.service.d/autologin.conf <<EOF
 [Service]
 ExecStart=
 ExecStart=-/sbin/agetty --autologin ${USERIN} --noclear %I 38400 linux
 EOF
-sudo cp $OVER /etc/systemd/system/getty@tty${TTY}.service.d/overwrite.conf
 }
 
 function rm_auto_login() {
-  sudo rm -r /etc/systemd/system/getty@tty${TTY}.service.d 
-  exit 0;
+rm -rf /etc/systemd/system/getty@tty${TTY}.service.d 
 }
 
 usage() {
 
     cat <<-EOF
 	Install a autologin for a Linux Console.
-	Copyright (C) 2016 Andreas Schockenhoff EKF Elektronik GmbH
+	Copyright (C) 2026 Andreas Schockenhoff EKF Elektronik GmbH
 	Report bugs to <asc@ekf.de>.
 	Usage: $0 [OPTIONS] [<user>] 
 	-t Number of the tty terminal. Default is 1.  
 	-e enable autologin
 	-d remove autologin
 	-r remove autologin
+	-u sudo service systemd-soft-reboot restart
 EOF
 exit 0
 }
@@ -42,10 +42,11 @@ exit 0
 options=$@ # save all options
 
 # Parse commandline options
-while getopts "edrvh?t:" opt ; do
+while getopts "edrvh?t:u" opt ; do
     case "$opt" in
-	r|d)	REMOVE_FLAG=1 ;;
-	e)	REMOVE_FLAG=0 ;;
+	r|d)	DO_REMOVE=1 ;;
+	e)	DO_ENABLE=1 ;;
+	u)	DO_RESTART=1 ;;
 	v)	verbose=1 v=-v ;;
 	t)	[ ${OPTARG:0:1} = "=" ] && TTY=${OPTARG/=} || TTY=$OPTARG ;;
 	h)	usage ;;
@@ -54,14 +55,29 @@ while getopts "edrvh?t:" opt ; do
 done
 shift $(($OPTIND-1))
 
-USERIN=${USER} # ${SUDO_USER} if we use sudo? / check if not set for both?
+USERIN=${SUDO_USER}
+# USERIN="ekf"
 [ $1 ] && USERIN=$1
 
-if [[ ${REMOVE_FLAG} == 0 ]] 
-then  
+# If no specific action is requested, default to enable
+if [[ ${DO_REMOVE} == 0 && ${DO_ENABLE} == 0 && ${DO_RESTART} == 0 ]]
+then
+	DO_ENABLE=1
+fi
+
+if [[ ${DO_REMOVE} == 1 ]]
+then
+	rm_auto_login
+fi
+
+if [[ ${DO_ENABLE} == 1 ]]
+then
 	make_auto_login
-else 
-	rm_auto_login 
+fi
+
+if [[ ${DO_RESTART} == 1 ]]
+then
+	sudo service systemd-soft-reboot restart
 fi
 
 exit $error
