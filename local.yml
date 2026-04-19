@@ -1,6 +1,6 @@
 ---
 - name: Set German keyboard layout
-  hosts: "{{ target_hosts | default('all:!localhost') }}"
+  hosts: localhost
   become: true
 
   tasks:
