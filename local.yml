@@ -1,5 +1,5 @@
 ---
-- name: Set German keyboard layout
+- name: Set US keyboard layout
   hosts: localhost
   become: true
 
@@ -9,18 +9,18 @@
       ansible.builtin.lineinfile:
         path: /etc/vconsole.conf
         regexp: '^KEYMAP='
-        line: 'KEYMAP=de'
+        line: 'KEYMAP=us'
       when: ansible_facts.os_family != "Debian"
 
     - name: Apply localectl keymap
-      ansible.builtin.command: localectl set-keymap de
+      ansible.builtin.command: localectl set-keymap us
       when: ansible_facts.os_family != "Debian"
 
     - name: Configure keyboard on Debian/Ubuntu
       ansible.builtin.lineinfile:
         path: /etc/default/keyboard
         regexp: '^XKBLAYOUT='
-        line: 'XKBLAYOUT="de"'
+        line: 'XKBLAYOUT="us"'
       when: ansible_facts.os_family == "Debian"
 
     - name: Reconfigure keyboard on Debian/Ubuntu
@@ -33,7 +33,7 @@
       ignore_errors: true
 
     - name: Apply keyboard layout to current console (non-Debian)
-      ansible.builtin.command: loadkeys de
+      ansible.builtin.command: loadkeys us
       when: ansible_facts.os_family != "Debian"
       ignore_errors: true
 
@@ -54,7 +54,7 @@
       ansible.builtin.debug:
         msg:
           - "================================================"
-          - "Keyboard layout changed to German (de)"
+          - "Keyboard layout changed to US (us)"
           - "================================================"
           - "Changes applied:"
           - "  ✓ Console keyboard layout configured"
