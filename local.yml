@@ -1,5 +1,5 @@
 ---
-- name: Harden login for specific Linux user
+- name: Harden login for specific Linux user, disable password.
   hosts: localhost
   become: true
 
@@ -19,6 +19,15 @@
           Match User {{ target_user }}
               PasswordAuthentication no
       notify: Reload sshd
+
+    - name: Disable root login over SSH completely
+      ansible.builtin.lineinfile:
+        path: /etc/ssh/sshd_config
+        regexp: '^#?\s*PermitRootLogin\s+'
+        line: 'PermitRootLogin no'
+        state: present
+        backrefs: false
+      notify: Reload sshd    
 
   handlers:
     - name: Reload sshd
