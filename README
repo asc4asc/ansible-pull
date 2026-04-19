@@ -1,1 +1,3 @@
+Verhindert das sich root weiterhin per ssh über das Netzwerk einloggen kann.
+
 ansible-pull -U https://github.com/asc4asc/ansible-pull.git -C disable-login-ssh-password
