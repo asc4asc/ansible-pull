@@ -1,4 +1,7 @@
 ansible-pull -U https://github.com/asc4asc/ansible-pull.git -C auto-login-console
+ansible-pull -U https://github.com/asc4asc/ansible-pull.git -C user
+make-auto-login-console -d -e -u ansible
+ansible-pull -U https://github.com/asc4asc/ansible-pull.git -C menu
 ping www.ekf.de
 ping6 www.google.de
 ip -6 route
