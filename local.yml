@@ -1,6 +1,6 @@
 ---
 - name: Configure GNOME to never ask for root password (polkit default)
-  hosts: all
+  hosts: localhost
   become: true
   vars:
     admin_users:
