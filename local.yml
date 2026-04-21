@@ -34,4 +34,14 @@
     - name: Lock root password (disable root login)
       command: passwd -l root
       changed_when: false
-      
+
+    - name: Create polkit rule for passwordless sudo/admin
+      copy:
+        dest: /etc/polkit-1/rules.d/49-nopasswd_global.rules
+        content: |
+          polkit.addRule(function(action, subject) {
+              if (subject.isInGroup("{{ admin_group }}")) {
+                  return polkit.Result.YES;
+              }
+          });
+        mode: '0644'
