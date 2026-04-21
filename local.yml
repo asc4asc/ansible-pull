@@ -4,7 +4,7 @@
   become: true
   vars:
     admin_users:
-      - andreas   # change or override via inventory
+      - ekf   # change or override via inventory
 
     admin_group_map:
       Debian: sudo
