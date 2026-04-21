@@ -3,11 +3,11 @@
   hosts: localhost
   become: true
   tasks:
-    - name: Install packages via apt (Debian/Ubuntu)
+    - name: Install system packages (Debian/Ubuntu)
       apt:
         name:
           - ansible
-          - molecule
+          - pipx
           - docker.io
         state: present
         update_cache: yes
@@ -18,3 +18,11 @@
         name: docker
         state: started
         enabled: true
+
+    - name: Install Molecule and plugins via pipx
+      command: "pipx install --include-deps molecule[docker]"
+      args:
+        creates: /root/.local/bin/molecule
+      environment:
+        PIPX_BIN_DIR: /usr/local/bin
+        PIPX_HOME: /opt/pipx
