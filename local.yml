@@ -2,37 +2,19 @@
 - name: Install Molecule test environment
   hosts: localhost
   become: true
-  vars:
-    pip_packages:
-      - molecule
-      - molecule-docker
-      - ansible
   tasks:
-    - name: Install OS packages (Debian/Ubuntu)
+    - name: Install packages via apt (Debian/Ubuntu)
       apt:
         name:
-          - python3-pip
-          - python3-venv
+          - ansible
+          - molecule
           - docker.io
         state: present
         update_cache: yes
       when: ansible_os_family == "Debian"
-
-    - name: Install OS packages (RHEL/CentOS/Rocky)
-      dnf:
-        name:
-          - python3-pip
-          - docker
-        state: present
-      when: ansible_os_family == "RedHat"
 
     - name: Enable and start Docker
       service:
         name: docker
         state: started
         enabled: true
-
-    - name: Install Molecule via pip
-      pip:
-        name: "{{ pip_packages }}"
-        executable: pip3
