@@ -6,6 +6,6 @@
   become: true
   
   roles:
-    - setup
+    # - setup
     - up2date_debian
     - testmenu
