@@ -9,6 +9,7 @@
           - ansible
           - pipx
           - docker.io
+          - docker-cli
         state: present
         update_cache: yes
       when: ansible_os_family == "Debian"
