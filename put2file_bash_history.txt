@@ -8,6 +8,12 @@ sudo apt install virt-manager libvirt-daemon-system libvirt-clients qemu-kvm
 ansible-pull -U https://github.com/asc4asc/ansible-pull.git -C gnome
 ansible-pull -U https://github.com/asc4asc/ansible-pull.git -C gnome-nopasswd
 ping www.ekf.de
-ping6 www.google.de
-ip -6 route
 ip a
+nmcli connection add type bridge ifname br0 con-name br0
+nmcli connection add type bridge-slave ifname enp2s0 master br0
+nmcli connection modify br0 ipv4.method auto ipv6.method ignore
+nmcli connection down enp3s0
+nmcli connection up br0
+ip addr show br0
+bridge link
+``
