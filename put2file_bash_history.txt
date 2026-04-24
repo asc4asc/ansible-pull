@@ -19,4 +19,5 @@ nmcli connection up br0
 ip a
 ip -d link show 
 bridge link show
+ansible-pull -U https://github.com/asc4asc/train-ansible-pull.git -C add2history # andere Befehle ansible train.
 ``
