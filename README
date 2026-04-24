@@ -1,5 +1,5 @@
-ansible-pull -U https://github.com/asc4asc/ansible-pull.git
+ansible-pull -U https://github.com/asc4asc/ansible-pull.git -C simple-www-server
 
 Wenn hosts:all gesetzt ist, muss es so aufgerufen werden.
 
-ansible-pull -i 'localhost,' -U https://github.com/asc4asc/ansible-pull.git
+ansible-pull -i 'localhost,' -U https://github.com/asc4asc/ansible-pull.git -C simple-www-server
