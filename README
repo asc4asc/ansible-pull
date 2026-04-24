@@ -2,7 +2,7 @@ Hi,
 
 simple demo call:
 
-ansible-pull -U https://github.com/asc4asc/ansible-pull.git
+ansible-pull -U https://github.com/asc4asc/ansible-pull.git -C simple-start
 
 Make a check with: cat /tmp/ansible-pull.txt that a file was created.
 
