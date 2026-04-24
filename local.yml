@@ -1,5 +1,5 @@
 ---
-- name: Gnome installieren und konfigurieren
+- name: Gnome konfigurieren
   hosts: localhost
   gather_facts: true
   become: true
@@ -42,26 +42,8 @@
         target_user_home: "/home/{{ target_user }}"
         autostart_dir: "/home/{{ target_user }}/.config/autostart"
         desktop_dir: "/home/{{ target_user }}/Desktop"
-  vars:
-    packages:
-      - gnome-session-flashback
-      - gnome-panel
-      - gnome-applets
-      - gnome-flashback
-      - gnome-terminal
-      - nautilus
-      - gedit
-      - firefox-esr
-      - gnome-disk-utility
-      - gdm3
-
+  
   tasks:
-    - name: Install GNOME Classic / Flashback Pakete
-      ansible.builtin.apt:
-        name: "{{ packages }}"
-        state: present
-        update_cache: true
-
     # --- Verzeichnisse für Zielbenutzer ---
     - name: Create autostart directory
       ansible.builtin.file:
