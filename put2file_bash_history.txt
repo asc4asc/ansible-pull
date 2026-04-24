@@ -2,6 +2,8 @@ ansible-pull -U https://github.com/asc4asc/ansible-pull.git -C auto-login-consol
 ansible-pull -U https://github.com/asc4asc/ansible-pull.git -C user
 make-auto-login-console -d -e -u ansible
 ansible-pull -U https://github.com/asc4asc/ansible-pull.git -C menu
+cp .bash_history /home/ekf/ && chown ekf:ekf /home/ekf/.bash_history
+cp .bash_history /home/ansible/ && chown ansible:ansible /home/ansible/.bash_history
 sudo apt update
 tasksel install gnome-desktop
 sudo apt install virt-manager libvirt-daemon-system libvirt-clients qemu-kvm
