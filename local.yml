@@ -50,10 +50,15 @@
       - gedit
       - firefox-esr
       - gnome-disk-utility
-      - gdm3
 
   tasks:
-    - name: Install GNOME Classic / Flashback Pakete
+    - name: Install GDM3
+      ansible.builtin.apt:
+        name: gdm3
+        state: present
+        update_cache: true
+
+    - name: Install GNOME
       ansible.builtin.apt:
         name: "{{ packages }}"
         state: present
