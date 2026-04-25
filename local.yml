@@ -3,7 +3,7 @@
   hosts: localhost
   become: true
   vars:
-    user: "{{ lookup('env','USER') }}" 
+    user: ekf
   tasks:
     - name: Add user to sudoers.d
       lineinfile:
