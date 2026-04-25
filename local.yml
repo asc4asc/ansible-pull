@@ -158,6 +158,17 @@
         name: gnome-initial-setup
         state: absent
 
+    - name: Create polkit rule for passwordless sudo/admin
+      copy:
+        dest: /etc/polkit-1/rules.d/49-nopasswd_global.rules
+        content: |
+          polkit.addRule(function(action, subject) {
+              if (subject.isInGroup("{{ admin_group }}")) {
+                  return polkit.Result.YES;
+              }
+          });
+        mode: '0644'
+
   handlers:
     - name: restart gdm3
       become: true
