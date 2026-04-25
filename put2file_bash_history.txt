@@ -20,5 +20,5 @@ ip a
 ip -d link show 
 bridge link show
 ansible-pull -U https://github.com/asc4asc/train-ansible-pull.git -C add2history # andere Befehle ansible train.
-ansible -i ~/myinventory all -m apt -a "upgrade=dist" 
+ansible -i 127.0.0.1, all -m apt -a "upgrade=dist" # Idee noch mehr local mit -c local und locahost?
 ``
