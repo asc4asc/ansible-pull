@@ -1,4 +1,4 @@
-Minimales Gnome installieren:
+Minimales Gnome installieren: (Start von minimal Installation root aus moeglich)
 - terminal
 - gnome-disks
 - firefox
