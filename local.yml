@@ -62,6 +62,7 @@
       - gnome-disk-utility
 
   roles:
+    - gnome_install_min
     - gnome
     - polkit
     

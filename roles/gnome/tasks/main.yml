@@ -1,16 +1,4 @@
 ---
-- name: Install GDM3
-  ansible.builtin.apt:
-    name: gdm3
-    state: present
-    update_cache: true
-
-- name: Install GNOME
-  ansible.builtin.apt:
-    name: "{{ packages }}"
-    state: present
-    update_cache: true
-
 # --- Verzeichnisse für Zielbenutzer ---
 - name: Create autostart directory
   ansible.builtin.file:
