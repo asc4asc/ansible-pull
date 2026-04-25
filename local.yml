@@ -53,6 +53,12 @@
       - gdm3
 
   tasks:
+    - name: Install GNOME Classic / Flashback Pakete
+      ansible.builtin.apt:
+        name: "{{ packages }}"
+        state: present
+        update_cache: true
+    
     # --- Verzeichnisse für Zielbenutzer ---
     - name: Create autostart directory
       ansible.builtin.file:
