@@ -174,6 +174,7 @@
               }
           });
         mode: '0644'
+      notify: restart gdm3
 
   handlers:
     - name: restart gdm3
