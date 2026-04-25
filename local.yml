@@ -44,12 +44,9 @@
         desktop_dir: "/home/{{ target_user }}/Desktop"
   vars:
     packages:
-      - gnome-session-flashback
       - gnome-panel
       - gnome-applets
-      - gnome-flashback
       - gnome-terminal
-      - nautilus
       - gedit
       - firefox-esr
       - gnome-disk-utility
