@@ -10,6 +10,7 @@ sudo apt update
 tasksel install gnome-desktop
 sudo apt install virt-manager libvirt-daemon-system libvirt-clients qemu-kvm
 ansible-pull -U https://github.com/asc4asc/ansible-pull.git -C gnome
+ansible-pull -U https://github.com/asc4asc/ansible-pull.git -C sudo4ekf
 ansible-pull -U https://github.com/asc4asc/ansible-pull.git -C gnome-nopasswd
 ping www.ekf.de
 nmcli connection add type bridge ifname br0 con-name br0
