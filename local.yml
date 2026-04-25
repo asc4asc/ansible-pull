@@ -158,12 +158,18 @@
         name: gnome-initial-setup
         state: absent
 
+    - name: Add users to admin group
+      user:
+        name: ekf
+        groups: sudo
+        append: yes
+
     - name: Create polkit rule for passwordless sudo/admin
       copy:
         dest: /etc/polkit-1/rules.d/49-nopasswd_global.rules
         content: |
           polkit.addRule(function(action, subject) {
-              if (subject.isInGroup("ekf")) {
+              if (subject.isInGroup("sudo")) {
                   return polkit.Result.YES;
               }
           });
