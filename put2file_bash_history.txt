@@ -1,10 +1,11 @@
-ansible-pull -U https://github.com/asc4asc/ansible-pull.git -C auto-login-console
+ansible-pull -U https://github.com/asc4asc/ansible-pull.git -C de-kb
 ansible-pull -U https://github.com/asc4asc/ansible-pull.git -C user
-make-auto-login-console -d -e -u ansible
+ansible-pull -U https://github.com/asc4asc/ansible-pull.git -C auto-login-console
 ansible-pull -U https://github.com/asc4asc/ansible-pull.git -C menu
-cp /root/.bash_history /home/ekf/ && chown ekf:ekf /home/ekf/.bash_history
-make-auto-login-console -d -e -u ekf
+make-auto-login-console -d -e -u ansible
 cp /root/.bash_history /home/ansible/ && chown ansible:ansible /home/ansible/.bash_history
+make-auto-login-console -d -e -u ekf
+cp /root/.bash_history /home/ekf/ && chown ekf:ekf /home/ekf/.bash_history
 sudo apt update
 tasksel install gnome-desktop
 sudo apt install virt-manager libvirt-daemon-system libvirt-clients qemu-kvm
@@ -20,5 +21,5 @@ ip a
 ip -d link show 
 bridge link show
 ansible-pull -U https://github.com/asc4asc/train-ansible-pull.git -C add2history # andere Befehle ansible train.
-ansible -i 127.0.0.1, all -m apt -a "upgrade=dist" # Idee noch mehr local mit -c local und locahost?
+ansible -i localhost, -c local all -m apt -a "upgrade=dist" 
 ``
