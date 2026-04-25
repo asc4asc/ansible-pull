@@ -7,6 +7,12 @@
 
 - name: Install GNOME
   ansible.builtin.apt:
-    name: "{{ packages }}"
+    name: 
+      - gnome-panel
+      - gnome-applets
+      - gnome-terminal
+      - gedit
+      - firefox-esr
+      - gnome-disk-utility
     state: present
     update_cache: true

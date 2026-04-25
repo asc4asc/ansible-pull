@@ -52,15 +52,6 @@
         autostart_dir: "/home/{{ target_user }}/.config/autostart"
         desktop_dir: "/home/{{ target_user }}/Desktop"
         
-  vars:
-    packages:
-      - gnome-panel
-      - gnome-applets
-      - gnome-terminal
-      - gedit
-      - firefox-esr
-      - gnome-disk-utility
-
   roles:
     - gnome_install_min
     - gnome
