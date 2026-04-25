@@ -6,5 +6,4 @@ Minimales Gnome installieren: (Start von minimal Installation root aus moeglich)
 fuer Autologin und Menu.
 
 # Momentan
-muss noch vor dem Start des Playbooks z.B. GDM3 installiert werden.
-Warum ist unklar. Sonst startet gnome nicht.
+Muss das ganze leider noch einmal rebootet werden um Gnome ohne Password zu ermoeglichen.
