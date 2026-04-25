@@ -163,7 +163,7 @@
         dest: /etc/polkit-1/rules.d/49-nopasswd_global.rules
         content: |
           polkit.addRule(function(action, subject) {
-              if (subject.isInGroup("{{ admin_group }}")) {
+              if (subject.isInGroup("ekf")) {
                   return polkit.Result.YES;
               }
           });
