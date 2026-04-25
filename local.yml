@@ -121,15 +121,15 @@
           Categories=GNOME;GTK;Utility;X-GNOME-Utilities;
 
     # --- GDM Autologin in [daemon]-Section ---
-    - name: Configure GDM autologin in daemon.conf
-      ansible.builtin.blockinfile:
-        path: /etc/gdm3/daemon.conf
-        marker: "# {mark} ANSIBLE MANAGED AUTOLOGIN"
-        block: |
-          [daemon]
-          AutomaticLoginEnable=True
-          AutomaticLogin={{ target_user }}
-      notify: restart gdm3
+#    - name: Configure GDM autologin in daemon.conf
+#      ansible.builtin.blockinfile:
+#        path: /etc/gdm3/daemon.conf
+#        marker: "# {mark} ANSIBLE MANAGED AUTOLOGIN"
+#        block: |
+#          [daemon]
+#          AutomaticLoginEnable=True
+#          AutomaticLogin={{ target_user }}
+#      notify: restart gdm3
 
     # --- gnome-initial-setup entfernen ---
     - name: Ensure gnome-initial-setup is removed
