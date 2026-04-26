@@ -67,4 +67,4 @@
         cmd: "echo 'Configuring {{ item }}'"
       loop: "{{ discovered_ethernet_ports_no_ip }}"
       when: 
-        - discovered_ethernet_ports_no_ip[item] | length > 0    
+        - discovered_ethernet_ports_no_ip | length > 0    
