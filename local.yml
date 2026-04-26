@@ -60,3 +60,11 @@
       when: 
         - discovered_ethernet_ports_no_ip is defined
         - discovered_ethernet_ports_no_ip | length > 0
+
+
+    - name: Configure only interfaces with no connectivity
+      ansible.builtin.command:
+        cmd: "echo 'Configuring {{ item }}'"
+      loop: "{{ discovered_ethernet_ports_no_ip }}"
+      when: 
+        - discovered_ethernet_ports_no_ip[item] | length > 0    
