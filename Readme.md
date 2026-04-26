@@ -122,7 +122,7 @@ ansible-playbook site.yml -i your_inventory
   ansible.builtin.command:
     cmd: "echo 'Configuring {{ item }}'"
   loop: "{{ discovered_ethernet_ports_no_ip }}"
-  when discovered_ethernet_ports_no_ip[item] | length > 0
+  when discovered_ethernet_ports_no_ip | length > 0
 ```
 
 ### Custom Internet Test IP
