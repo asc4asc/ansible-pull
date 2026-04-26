@@ -56,5 +56,6 @@
     - gnome_install_min
     - gnome
     - polkit
+    - disable_root_pw_local
     
     

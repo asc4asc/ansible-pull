@@ -1,0 +1,5 @@
+---
+- name: Sperre das Root-Passwort (lokal)
+  ansible.builtin.user:
+    name: root
+    password_lock: true
