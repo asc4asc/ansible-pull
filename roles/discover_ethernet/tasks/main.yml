@@ -22,10 +22,10 @@
         interface_ipv4_addresses: {}
         interface_ipv6_addresses: {}
 
-    - name: Check if each interface has an IPv4 address
+    - name: Check if each interface has an IP address
       ansible.builtin.set_fact:
-        interface_has_ip: "{{ interface_has_ip | combine({item: (ethernet_details[item].ipv4.address is defined and ethernet_details[item].ipv4.address | length > 0) or (ethernet_details[item].ipv6 is defined and ethernet_details[item].ipv6 | length > 0)}) }}"
-        interface_ipv4_addresses: "{{ interface_ipv4_addresses | combine({item: ethernet_details[item].ipv4.address | default('none')}) }}"
+        interface_has_ip: "{{ interface_has_ip | combine({item: (ethernet_details[item].ipv4 is defined and ethernet_details[item].ipv4.address is defined) or (ethernet_details[item].ipv6 is defined and ethernet_details[item].ipv6 | length > 0)}) }}"
+        interface_ipv4_addresses: "{{ interface_ipv4_addresses | combine({item: ethernet_details[item].ipv4.address if (ethernet_details[item].ipv4 is defined and ethernet_details[item].ipv4.address is defined) else 'none'}) }}"
         interface_ipv6_addresses: "{{ interface_ipv6_addresses | combine({item: ethernet_details[item].ipv6 | map(attribute='address') | list if ethernet_details[item].ipv6 is defined else ['none']}) }}"
       loop: "{{ ethernet_ports }}"
       when: 
@@ -56,7 +56,7 @@
         cmd: "ping -c {{ ping_count | default(2) }} -W {{ ping_timeout | default(5) }} -I {{ item }} {{ internet_test_ip | default('1.1.1.1') }}"
       loop: "{{ ethernet_ports }}"
       register: ping_results
-      ignore_errors: true
+      failed_when: false
       changed_when: false
       when: 
         - ethernet_ports | length > 0
