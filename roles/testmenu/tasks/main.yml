@@ -55,7 +55,6 @@
       p) poweroff 
       r) reboot
       stress-test) Simple script to make CPU stress.
-      clean.boot) Clean boot disk. Example for a new Install over the net.
       Please use start-reboot or start-restart to start a endless test. 
       ---------------------------------------------------
       
