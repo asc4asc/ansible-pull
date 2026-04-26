@@ -117,6 +117,12 @@ ansible-playbook site.yml -i your_inventory
     cmd: "echo 'Configuring {{ item }}'"
   loop: "{{ discovered_ethernet_ports }}"
   when: discovered_interface_internet_connectivity[item] | default(false)
+
+- name: Configure only interfaces with no connectivity
+  ansible.builtin.command:
+    cmd: "echo 'Configuring {{ item }}'"
+  loop: "{{ discovered_ethernet_ports_no_ip }}"
+  when discovered_ethernet_ports_no_ip[item] | default(false)
 ```
 
 ### Custom Internet Test IP
