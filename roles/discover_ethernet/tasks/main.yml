@@ -107,4 +107,5 @@
     discovered_interface_ipv4_addresses: "{{ interface_ipv4_addresses | default({}) }}"
     discovered_interface_ipv6_addresses: "{{ interface_ipv6_addresses | default({}) }}"
     discovered_interface_internet_connectivity: "{{ interface_internet_connectivity | default({}) }}"
+    discovered_ethernet_ports_no_ip: "{{ interface_has_ip | dict2items | rejectattr('value') | map(attribute='key') | list if interface_has_ip is defined else [] }}"
     cacheable: "{{ cache_ethernet_facts | default(false) }}"

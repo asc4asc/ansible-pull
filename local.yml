@@ -53,3 +53,10 @@
       when: 
         - discovered_ethernet_ports is defined
         - discovered_interface_internet_connectivity[item] | default(false)
+
+    - name: List ports without IP
+      ansible.builtin.debug:
+        msg: "Ports without IP: {{ discovered_ethernet_ports_no_ip | join(', ') }}"
+      when: 
+        - discovered_ethernet_ports_no_ip is defined
+        - discovered_ethernet_ports_no_ip | length > 0
