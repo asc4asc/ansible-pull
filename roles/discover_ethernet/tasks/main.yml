@@ -1,0 +1,110 @@
+---
+- name: Gather network facts
+  ansible.builtin.setup:
+    gather_subset:
+      - network
+
+- name: Find all ethernet interfaces
+  ansible.builtin.set_fact:
+    ethernet_ports: "{{ ansible_interfaces | select('match', '^(eth|enp|eno|ens).*') | list }}"
+
+- name: Get detailed information for each ethernet port
+  ansible.builtin.set_fact:
+    ethernet_details: "{{ ethernet_details | default({}) | combine({item: hostvars[inventory_hostname]['ansible_' + item] | default({})}) }}"
+  loop: "{{ ethernet_ports }}"
+  when: ethernet_ports | length > 0
+
+- name: Check IP addresses on interfaces
+  block:
+    - name: Initialize interface IP status dictionary
+      ansible.builtin.set_fact:
+        interface_has_ip: {}
+        interface_ipv4_addresses: {}
+        interface_ipv6_addresses: {}
+
+    - name: Check if each interface has an IPv4 address
+      ansible.builtin.set_fact:
+        interface_has_ip: "{{ interface_has_ip | combine({item: (ethernet_details[item].ipv4.address is defined and ethernet_details[item].ipv4.address | length > 0) or (ethernet_details[item].ipv6 is defined and ethernet_details[item].ipv6 | length > 0)}) }}"
+        interface_ipv4_addresses: "{{ interface_ipv4_addresses | combine({item: ethernet_details[item].ipv4.address | default('none')}) }}"
+        interface_ipv6_addresses: "{{ interface_ipv6_addresses | combine({item: ethernet_details[item].ipv6 | map(attribute='address') | list if ethernet_details[item].ipv6 is defined else ['none']}) }}"
+      loop: "{{ ethernet_ports }}"
+      when: 
+        - ethernet_ports | length > 0
+        - check_ip_addresses | default(true)
+
+    - name: Display IP address status
+      ansible.builtin.debug:
+        msg: 
+          - "Interface {{ item }}: Has IP = {{ interface_has_ip[item] }}"
+          - "  IPv4: {{ interface_ipv4_addresses[item] }}"
+          - "  IPv6: {{ interface_ipv6_addresses[item] | join(', ') }}"
+      loop: "{{ ethernet_ports }}"
+      when: 
+        - ethernet_ports | length > 0
+        - check_ip_addresses | default(true)
+        - show_ethernet_details | default(false)
+  when: check_ip_addresses | default(true)
+
+- name: Check internet connectivity per interface
+  block:
+    - name: Initialize connectivity status dictionary
+      ansible.builtin.set_fact:
+        interface_internet_connectivity: {}
+
+    - name: Test internet connectivity via each interface with IP
+      ansible.builtin.command:
+        cmd: "ping -c {{ ping_count | default(2) }} -W {{ ping_timeout | default(5) }} -I {{ item }} {{ internet_test_ip | default('1.1.1.1') }}"
+      loop: "{{ ethernet_ports }}"
+      register: ping_results
+      ignore_errors: true
+      changed_when: false
+      when: 
+        - ethernet_ports | length > 0
+        - interface_has_ip[item] | default(false)
+
+    - name: Build connectivity status dictionary
+      ansible.builtin.set_fact:
+        interface_internet_connectivity: "{{ interface_internet_connectivity | combine({item.item: item.rc == 0}) }}"
+      loop: "{{ ping_results.results }}"
+      when: 
+        - ping_results is defined
+        - item.item is defined
+        - not item.skipped | default(false)
+
+    - name: Set no connectivity for interfaces without IP
+      ansible.builtin.set_fact:
+        interface_internet_connectivity: "{{ interface_internet_connectivity | combine({item: false}) }}"
+      loop: "{{ ethernet_ports }}"
+      when:
+        - ethernet_ports | length > 0
+        - not (interface_has_ip[item] | default(false))
+
+    - name: Display internet connectivity status
+      ansible.builtin.debug:
+        msg: "Interface {{ item }}: Internet connectivity to {{ internet_test_ip | default('1.1.1.1') }} = {{ interface_internet_connectivity[item] | default(false) }}"
+      loop: "{{ ethernet_ports }}"
+      when: 
+        - ethernet_ports | length > 0
+        - show_ethernet_details | default(false)
+  when: check_internet_connectivity | default(true)
+
+- name: Display discovered ethernet ports
+  ansible.builtin.debug:
+    msg: "Found {{ ethernet_ports | length }} ethernet port(s): {{ ethernet_ports | join(', ') }}"
+
+- name: Display ethernet port details
+  ansible.builtin.debug:
+    var: ethernet_details
+  when: 
+    - ethernet_details is defined
+    - show_ethernet_details | default(false)
+
+- name: Save ethernet ports to fact file (optional)
+  ansible.builtin.set_fact:
+    discovered_ethernet_ports: "{{ ethernet_ports }}"
+    discovered_ethernet_details: "{{ ethernet_details | default({}) }}"
+    discovered_interface_has_ip: "{{ interface_has_ip | default({}) }}"
+    discovered_interface_ipv4_addresses: "{{ interface_ipv4_addresses | default({}) }}"
+    discovered_interface_ipv6_addresses: "{{ interface_ipv6_addresses | default({}) }}"
+    discovered_interface_internet_connectivity: "{{ interface_internet_connectivity | default({}) }}"
+    cacheable: "{{ cache_ethernet_facts | default(false) }}"

@@ -1,0 +1,9 @@
+---
+# Default values for ethernet discovery role
+show_ethernet_details: false  # Set to true to display detailed info about each port
+cache_ethernet_facts: false   # Set to true to cache discovered facts
+check_ip_addresses: true      # Set to true to check if interfaces have IP addresses
+check_internet_connectivity: true  # Set to true to test connectivity to 1.1.1.1
+internet_test_ip: "1.1.1.1"   # IP address to test internet connectivity
+ping_count: 2                 # Number of ping packets to send
+ping_timeout: 5               # Timeout for ping in seconds

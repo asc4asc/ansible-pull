@@ -1,29 +1,55 @@
 ---
-- name: Install Molecule test environment
+- name: Discover ethernet ports on all hosts
   hosts: localhost
   become: true
+  gather_facts: false
+  
+  pre_tasks:
+    - name: Discover all ethernet ports
+      ansible.builtin.include_role:
+        name: discover_ethernet
+      tags:
+        - discover
+        - network
+  
   tasks:
-    - name: Install system packages (Debian/Ubuntu)
-      apt:
-        name:
-          - ansible
-          - pipx
-          - docker.io
-          - docker-cli
-        state: present
-        update_cache: yes
-      when: ansible_os_family == "Debian"
+    - name: Example - Use discovered ethernet ports
+      ansible.builtin.debug:
+        msg: "This host has {{ discovered_ethernet_ports | length }} ethernet port(s)"
+      when: discovered_ethernet_ports is defined
+    
+    - name: Example - Iterate over discovered ports
+      ansible.builtin.debug:
+        msg: "Port {{ item }} details: {{ discovered_ethernet_details[item] | default('No details available') }}"
+      loop: "{{ discovered_ethernet_ports }}"
+      when: discovered_ethernet_ports is defined
 
-    - name: Enable and start Docker
-      service:
-        name: docker
-        state: started
-        enabled: true
+    - name: Example - show ports only
+      ansible.builtin.debug:
+        msg: "Port {{ item }}"
+      loop: "{{ discovered_ethernet_ports }}"
+      when: discovered_ethernet_ports is defined
 
-    - name: Install Molecule and plugins via pipx
-      command: "pipx install --include-deps molecule[docker]"
-      args:
-        creates: /root/.local/bin/molecule
-      environment:
-        PIPX_BIN_DIR: /usr/local/bin
-        PIPX_HOME: /opt/pipx
+    - name: Example - Show interface IP status
+      ansible.builtin.debug:
+        msg: 
+          - "Interface: {{ item }}"
+          - "Has IP: {{ discovered_interface_has_ip[item] | default(false) }}"
+          - "IPv4: {{ discovered_interface_ipv4_addresses[item] | default('none') }}"
+          - "IPv6: {{ discovered_interface_ipv6_addresses[item] | default(['none']) | join(', ') }}"
+      loop: "{{ discovered_ethernet_ports }}"
+      when: discovered_ethernet_ports is defined
+
+    - name: Example - Show internet connectivity status
+      ansible.builtin.debug:
+        msg: "Interface {{ item }}: Internet connectivity = {{ discovered_interface_internet_connectivity[item] | default(false) }}"
+      loop: "{{ discovered_ethernet_ports }}"
+      when: discovered_ethernet_ports is defined
+
+    - name: Example - List only interfaces with internet connectivity
+      ansible.builtin.debug:
+        msg: "{{ item }} has internet access via {{ discovered_interface_ipv4_addresses[item] }}"
+      loop: "{{ discovered_ethernet_ports }}"
+      when: 
+        - discovered_ethernet_ports is defined
+        - discovered_interface_internet_connectivity[item] | default(false)
