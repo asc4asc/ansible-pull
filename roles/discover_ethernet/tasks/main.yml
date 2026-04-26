@@ -6,11 +6,11 @@
 
 - name: Find all ethernet interfaces
   ansible.builtin.set_fact:
-    ethernet_ports: "{{ ansible_interfaces | select('match', '^(eth|enp|eno|ens).*') | list }}"
+    ethernet_ports: "{{ ansible_facts['interfaces'] | select('match', '^(eth|enp|eno|ens).*') | list }}"
 
 - name: Get detailed information for each ethernet port
   ansible.builtin.set_fact:
-    ethernet_details: "{{ ethernet_details | default({}) | combine({item: hostvars[inventory_hostname]['ansible_' + item] | default({})}) }}"
+    ethernet_details: "{{ ethernet_details | default({}) | combine({item: ansible_facts[item] | default({})}) }}"
   loop: "{{ ethernet_ports }}"
   when: ethernet_ports | length > 0
 
