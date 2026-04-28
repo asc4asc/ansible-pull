@@ -2,6 +2,7 @@ ansible-pull -U https://github.com/asc4asc/ansible-pull.git -C de-kb
 ansible-pull -U https://github.com/asc4asc/ansible-pull.git -C user
 ansible-pull -U https://github.com/asc4asc/ansible-pull.git -C auto-login-console
 ansible-pull -U https://github.com/asc4asc/ansible-pull.git -C menu
+sudo ansible-pull -U https://github.com/asc4asc/ansible-pull.git -C sudo4ekf
 make-auto-login-console -d -e -u ansible
 cp /root/.bash_history /home/ansible/ && chown ansible:ansible /home/ansible/.bash_history
 make-auto-login-console -d -e -u ekf
@@ -10,6 +11,7 @@ sudo apt update
 tasksel install gnome-desktop
 sudo apt install virt-manager libvirt-daemon-system libvirt-clients qemu-kvm
 ansible-pull -U https://github.com/asc4asc/ansible-pull.git -C gnome
+ansible-pull -U https://github.com/asc4asc/ansible-pull.git -C config4gnome4ubuntu
 ansible-pull -U https://github.com/asc4asc/ansible-pull.git -C sudo4ekf
 ansible-pull -U https://github.com/asc4asc/ansible-pull.git -C gnome-nopasswd
 ping www.ekf.de
