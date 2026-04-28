@@ -151,7 +151,6 @@
   community.general.dconf:
     key: "/org/gnome/desktop/screensaver/lock-enabled"
     value: "false"
-    state: present
-  become_user: "{{ target_user }}"
+
     name: gnome-initial-setup
     state: absent
