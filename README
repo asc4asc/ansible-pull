@@ -2,4 +2,6 @@ Hier werden Befehle zum einfachen Abruf in die Bash History des Benutzers gebrac
 
 simple demo call:
 
+apt install ansible git # for installed Ubuntu.
+
 ansible-pull -U https://github.com/asc4asc/ansible-pull.git -C add2history
