@@ -78,9 +78,12 @@
   notify: restart gdm3
 
 # --- gnome-initial-setup entfernen ---
-#- name: Ensure gnome-initial-setup is removed
-#  ansible.builtin.apt:
+- name: Ensure gnome-initial-setup is removed
+  ansible.builtin.apt:
+    name: gnome-initial-setup
+    state: absent
 
+# --- GNOME Settings (gsettings/dconf) ---
 - name: Disable logout prompt (for quick shutdown)
   community.general.dconf:
     key: "/org/gnome/SessionManager/logout-prompt"
