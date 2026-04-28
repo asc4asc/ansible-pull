@@ -1,7 +1,4 @@
-Minimales Gnome installieren: (Start von minimal Installation root aus moeglich)
-- terminal
-- gnome-disks
-- firefox
+Gnome config: (in fertigem Ubuntu)
 
 fuer Autologin und Menu.
 
