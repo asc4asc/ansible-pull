@@ -53,7 +53,7 @@
         desktop_dir: "/home/{{ target_user }}/Desktop"
         
   roles:
-    # - gnome_install_min
+    - gnome_install_min
     - gnome
     - polkit
     - disable_root_pw_local
