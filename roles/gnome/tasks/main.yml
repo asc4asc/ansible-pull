@@ -26,8 +26,8 @@
     content: |
       [Desktop Entry]
       Type=Application
-      Name=GNOME Terminal
-      Exec=gnome-terminal
+      Name=Terminal
+      Exec=ptyxis
       OnlyShowIn=GNOME;GNOME-Flashback;
       X-GNOME-Autostart-enabled=true
 
@@ -41,9 +41,9 @@
     content: |
       [Desktop Entry]
       Version=1.0
-      Name=GNOME Terminal
-      Comment=Open the GNOME Terminal
-      Exec=gnome-terminal
+      Name=Terminal
+      Comment=Open the Terminal
+      Exec=ptyxis
       Icon=utilities-terminal
       Terminal=false
       Type=Application
@@ -67,9 +67,9 @@
       Categories=GNOME;GTK;Utility;X-GNOME-Utilities;
 
 # --- GDM Autologin in [daemon]-Section ---
-- name: Configure GDM autologin in daemon.conf
+- name: Configure GDM autologin in custom.conf debian daemon.conf
   ansible.builtin.blockinfile:
-    path: /etc/gdm3/daemon.conf
+    path: /etc/gdm3/custom.conf
     marker: "# {mark} ANSIBLE MANAGED AUTOLOGIN"
     block: |
       [daemon]
