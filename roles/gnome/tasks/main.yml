@@ -67,9 +67,9 @@
       Categories=GNOME;GTK;Utility;X-GNOME-Utilities;
 
 # --- GDM Autologin in [daemon]-Section ---
-- name: Configure GDM autologin in daemon.conf
+- name: Configure GDM autologin in custom.conf debian daemon.conf
   ansible.builtin.blockinfile:
-    path: /etc/gdm3/daemon.conf
+    path: /etc/gdm3/custom.conf
     marker: "# {mark} ANSIBLE MANAGED AUTOLOGIN"
     block: |
       [daemon]
