@@ -81,7 +81,7 @@
 - name: Ensure gnome-initial-setup is removed
   ansible.builtin.apt:
 
-  - name: Disable logout prompt (for quick shutdown)
+- name: Disable logout prompt (for quick shutdown)
   community.general.dconf:
     key: "/org/gnome/SessionManager/logout-prompt"
     value: "false"
