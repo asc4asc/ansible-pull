@@ -3,7 +3,6 @@ ansible-pull -U https://github.com/asc4asc/ansible-pull.git -C user
 ansible-pull -U https://github.com/asc4asc/ansible-pull.git -C auto-login-console
 ansible-pull -U https://github.com/asc4asc/ansible-pull.git -C menu
 sudo ansible-pull -U https://github.com/asc4asc/ansible-pull.git -C sudo4ekf
-apt install ansible git
 make-auto-login-console -d -e -u ansible
 cp /root/.bash_history /home/ansible/ && chown ansible:ansible /home/ansible/.bash_history
 make-auto-login-console -d -e -u ekf
