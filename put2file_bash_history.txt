@@ -1,28 +1,12 @@
 ansible-pull -U https://github.com/asc4asc/ansible-pull.git -C de-kb
-ansible-pull -U https://github.com/asc4asc/ansible-pull.git -C user
-ansible-pull -U https://github.com/asc4asc/ansible-pull.git -C auto-login-console
 ansible-pull -U https://github.com/asc4asc/ansible-pull.git -C menu
-sudo ansible-pull -U https://github.com/asc4asc/ansible-pull.git -C sudo4ekf
-make-auto-login-console -d -e -u ansible
-cp /root/.bash_history /home/ansible/ && chown ansible:ansible /home/ansible/.bash_history
-make-auto-login-console -d -e -u ekf
-cp /root/.bash_history /home/ekf/ && chown ekf:ekf /home/ekf/.bash_history
-sudo apt update
-tasksel install gnome-desktop
-sudo apt install virt-manager libvirt-daemon-system libvirt-clients qemu-kvm
-ansible-pull -U https://github.com/asc4asc/ansible-pull.git -C gnome
-ansible-pull -U https://github.com/asc4asc/ansible-pull.git -C config4gnome4ubuntu
-ansible-pull -U https://github.com/asc4asc/ansible-pull.git -C sudo4ekf
-ansible-pull -U https://github.com/asc4asc/ansible-pull.git -C gnome-nopasswd
-ping www.ekf.de
-nmcli connection add type bridge ifname br0 con-name br0
-nmcli connection add type bridge-slave ifname enp1s0 master br0
-nmcli connection modify br0 ipv4.method auto ipv6.method ignore
-nmcli connection down enp1s0
-nmcli connection up br0
+sudo realm -v discover intra.ekf.com
+sudo realm join intra.ekf.com
+sudo realm leave --verbose
+intra.ekf.com
+sudo realm leave intra.ekf.com -U Administrator
+sudo cat /etc/sssd/sssd.conf
+klist
 ip a
-ip -d link show 
-bridge link show
 ansible-pull -U https://github.com/asc4asc/train-ansible-pull.git -C add2history # andere Befehle ansible train.
-ansible -i localhost, -c local all -m apt -a "upgrade=dist" 
 ``
