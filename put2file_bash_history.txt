@@ -10,3 +10,4 @@ klist
 ip a
 ansible-pull -U https://github.com/asc4asc/train-ansible-pull.git -C add2history # andere Befehle ansible train.
 ``
+cat /etc/krb5.conf # ????
