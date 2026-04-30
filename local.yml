@@ -10,6 +10,6 @@
       ansible.builtin.copy:
         src: put2file_bash_history.txt
         dest: "{{ lookup('env','HOME') }}/.bash_history"
-        owner: "{{ ansible_user_id }}"
-        group: "{{ ansible_user_id }}"
+        owner: "{{ lookup('env','USER') }}"
+        group: "{{ lookup('env','USER') }}"
         mode: '0600'
